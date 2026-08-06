@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anusha Nanduri — Full Stack / MERN Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1220;
+    --ink-soft:#121A2C;
+    --ink-softer:#182238;
+    --ledger:#2A3550;
+    --ledger-soft:#1E2A44;
+    --paper:#F7F3EA;
+    --paper-raised:#FCFAF4;
+    --paper-line:#E3DBC7;
+    --text-dark:#1C2230;
+    --text-dark-soft:#4B5266;
+    --text-light:#EAEDF5;
+    --muted-light:#8B98B8;
+    --muted-lighter:#5E6A8A;
+    --signal:#57E8CE;
+    --signal-dim:#2E7C70;
+    --ember:#F0955B;
+    --ember-dim:#8A5637;
+    --about-bg2:#0D0920;
+    --radius-sm:6px;
+    --radius-md:10px;
+    --maxw:1300px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text-light);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .serif{font-family:'Fraunces',serif;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+  :focus-visible{outline:2px solid var(--signal);outline-offset:3px;}
+
+  /* ---------- Editor chrome / nav ---------- */
+  .editor-bar{
+    position:sticky;top:0;z-index:100;
+    background:var(--ink);
+    border-bottom:1px solid var(--ledger);
+  }
+  .editor-bar__inner{
+    max-width:var(--maxw);margin:0 auto;padding:0 28px;
+    display:flex;align-items:center;justify-content:space-between;height:56px;
+  }
+  .logo{
+    font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px;color:var(--text-light);
+    display:flex;align-items:center;gap:8px;
+  }
+  .logo__dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 10px var(--signal);}
+  .tabs{display:flex;height:100%;}
+  .tab{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted-light);
+    display:flex;align-items:center;gap:7px;padding:0 16px;height:100%;
+    border-right:1px solid var(--ledger);position:relative;
+    transition:color .15s ease;
+  }
+  .tab:hover{color:var(--text-light);}
+  .tab.is-active{color:var(--text-light);background:var(--ink-soft);}
+  .tab.is-active::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--signal);
+  }
+  .tab__dot{width:6px;height:6px;border-radius:50%;background:var(--ember);opacity:.85;}
+  .menu-btn{display:none;background:none;border:1px solid var(--ledger);color:var(--text-light);width:38px;height:38px;border-radius:var(--radius-sm);}
+  @media (max-width:760px){
+    .tabs{display:none;}
+    .menu-btn{display:block;}
+    .tabs.is-open{
+      display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:var(--ink-soft);
+      border-bottom:1px solid var(--ledger);
+    }
+    .tabs.is-open .tab{height:44px;border-right:none;border-bottom:1px solid var(--ledger);padding:0 20px;}
+  }
+
+  /* ---------- Sections generic ---------- */
+  section{padding:96px 0;}
+  @media (max-width:760px){ section{padding:64px 0;} }
+  .name{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:18px;line-height:1.15;margin:0 0 18px;color:var(--text-dark);}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--signal);margin:0 0 14px;display:flex;align-items:center;gap:8px;
+  }
+  .eyebrow::before{content:"//";color:var(--muted-lighter);}
+  .section-title{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(28px,4vw,42px);line-height:1.15;margin:0 0 9px;
+  }
+  .section--dark .section-title{color:var(--text-light);}
+  .section--paper{background:var(--paper);color:var(--text-dark);}
+  .section--paper .section-title{color:var(--text-dark);}
+  .section--paper .eyebrow::before{color:var(--text-dark-soft);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    overflow: hidden;
+    padding: 88px 0 72px;
+  }
+  .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.12;
+
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg stroke='%23606A9E' stroke-width='1' fill='none'%3E%3Cpath d='M20 0V40H60V80H100V140'/%3E%3Cpath d='M140 30H90V70H50V110H0'/%3E%3Ccircle cx='20' cy='40' r='3'/%3E%3Ccircle cx='60' cy='80' r='3'/%3E%3Ccircle cx='100' cy='80' r='3'/%3E%3Ccircle cx='50' cy='110' r='3'/%3E%3C/g%3E%3C/svg%3E");
+
+      background-size:140px;
+  }
+.hero__grid{
+  display:grid;
+  grid-template-columns:0.9fr 1.1fr;
+  gap:56px;
+  align-items:center;
+}  @media (max-width:900px){ .hero__grid{grid-template-columns:1fr;} }
+  .hero__badge{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted-light);
+    border:1px solid var(--ledger);display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:20px;margin-bottom:22px;
+  }
+  .hero__badge span.pulse{width:7px;height:7px;border-radius:50%;background:var(--signal);animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .hero h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(34px,5.4vw,58px);line-height:1.06;margin:0 0 22px;color:var(--text-light);
+  }
+  .hero h1 em{font-style:italic;color:var(--signal);}
+  .hero p.lead{font-size:15px;line-height:1.65;color:var(--muted-light);max-width:520px;margin:0 0 30px;}
+  .hero__actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:'JetBrains Mono',monospace;font-size:13.5px;font-weight:500;padding:13px 22px;border-radius:var(--radius-sm);
+    display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;transition:transform .15s ease, background .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn--solid{background:var(--signal);color:var(--ink);}
+  .btn--solid:hover{background:#79f0da;}
+  .btn--download{border-color:var(--ledger);color:var(--text-light);}
+  .btn--download:hover{border-color:var(--muted-light);}
+  .btn--ghost{border-color:var(--ledger);color:var(--text-dark);}
+  .btn--ghost:hover{background-color:var(--ink-softer);border-color:var(--muted-light);color:var(--muted-light);}
+
+  .code-panel{
+    background:var(--ink-soft);border:1px solid var(--ledger);border-radius:var(--radius-md);overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.6);
+  }
+  .code-panel__head{
+    display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--ledger);background:var(--ink-softer);
+  }
+  .code-panel__head span{width:10px;height:10px;border-radius:50%;}
+  .code-panel__head span:nth-child(1){background:#F0955B;}
+  .code-panel__head span:nth-child(2){background:#57E8CE;}
+  .code-panel__head span:nth-child(3){background:#4C5A7C;}
+  .code-panel__title{margin-left:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted-light);}
+  .code-panel__body{padding:22px 22px 26px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.75;color:var(--muted-light);overflow-x:auto;}
+  .code-panel__body .kw{color:#F0955B;}
+  .code-panel__body .str{color:#57E8CE;}
+  .code-panel__body .prop{color:#9DB4E8;}
+  .code-panel__body .cur{display:inline-block;width:7px;height:15px;background:var(--signal);vertical-align:middle;animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .skills-marquee{
+      overflow:hidden;
+      background:var(--ink-soft);
+      border-top:1px solid var(--ledger);
+      border-bottom:1px solid var(--ledger);
+      padding:18px 0;
+  }
+
+  .skills-track{
+      display:flex;
+      width:max-content;
+      animation:scrollSkills 28s linear infinite;
+  }
+
+  .skills-track:hover{
+      animation-play-state:paused;
+  }
+
+  .skill-pill{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-right:18px;
+      padding:10px 18px;
+      border:1px solid var(--ledger);
+      border-radius:999px;
+      background:var(--ink);
+      color:var(--text-light);
+      font-family:'JetBrains Mono', monospace;
+      font-size:13px;
+      white-space:nowrap;
+  }
+
+
+  @keyframes scrollSkills{
+      from{
+          transform:translateX(0);
+      }
+      to{
+          transform:translateX(-50%);
+      }
+  }
+  /* ---------- About / git log ---------- */
+  .about__grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  @media (max-width:860px){ .about__grid{grid-template-columns:1fr;} }
+  .about p{font-size:16px;line-height:1.75;color:var(--text-dark-soft);margin:0 0 16px;}
+  .gitlog{border-left:2px solid var(--paper-line);padding-left:22px;margin-top:8px;}
+  .gitlog__item{position:relative;padding-bottom:26px;}
+  .gitlog__item:last-child{padding-bottom:0;}
+  .gitlog__item::before{
+    content:"";position:absolute;left:-30px;top:4px;width:11px;height:11px;border-radius:50%;
+    background:var(--paper);border:2px solid var(--ember);
+  }
+  .gitlog__meta{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ember-dim);margin-bottom:4px;letter-spacing:.02em;}
+  .gitlog__role{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0 0 4px;color:var(--text-dark);}
+  .gitlog__company{font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin:0 0 4px;color:var(--text-dark);margin-bottom:6px;}
+  .gitlog__desc{font-size:14.5px;color:var(--text-dark-soft);line-height:1.6;margin:0;}
+
+  /* ---------- Skills ---------- */
+  .skills_subtitle{font-size:16px;line-height:1.75;color:var(--muted-light);margin:0 0 16px;}
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:860px){ .skills-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .skills-grid{grid-template-columns:1fr;} }
+  .skillcard{background:var(--ink-soft);border:1px solid var(--ledger);border-radius:var(--radius-md);padding:20px 20px 18px;}
+  .skillcard:hover{
+  transform:translateY(-4px);
+  border-color:var(--signal);
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+  .skillcard__title{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--signal);letter-spacing:.05em;text-transform:uppercase;margin:0 0 14px;}
+  .chiprow{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted-light);background:var(--ink-softer);
+    border:1px solid var(--ledger-soft);padding:5px 10px;border-radius:5px;
+  }
+
+  /* ---------- Projects grid ---------- */
+  .projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  @media (max-width:760px){ .projects-grid{grid-template-columns:1fr;} }
+  .projectcard{
+    background:var(--paper-raised);border:1px solid var(--paper-line);border-radius:var(--radius-md);padding:26px 26px 22px;
+    display:flex;flex-direction:column;height:100%;transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .projectcard:hover{transform:translateY(-3px);box-shadow:0 20px 40px -24px rgba(28,34,48,.35);border-color:#D8CDA9;}
+  .projectcard__path{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dark-soft);margin-bottom:10px;}
+  .projectcard__path b{color:var(--ember-dim);}
+  .projectcard h3{font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin:0 0 8px;color:var(--text-dark);}
+  .projectcard p{font-size:14.5px;color:var(--text-dark-soft);line-height:1.6;margin:0 0 18px;flex-grow:1;}
+  .projectcard__foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+  .projectcard__open{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text-dark);display:flex;align-items:center;gap:6px;}
+  .projectcard:hover .projectcard__open{color:var(--ember-dim);}
+  .projectcard .chip{background:#F0EADA;color:var(--text-dark-soft);border-color:var(--paper-line);}
+
+  /* ---------- Contact ---------- */
+  .contact__grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+  @media (max-width:760px){ .contact__grid{grid-template-columns:1fr;} }
+  .contact-card{border:1px solid var(--ledger);border-radius:var(--radius-md);padding:22px;background:var(--ink-soft);}
+  .contact-card a{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--signal);word-break:break-all;}
+  .contact-card__label{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted-lighter);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+
+  /* ---------- Enhanced Footer ---------- */
+  footer{
+    border-top:2px solid var(--ledger);
+    background:linear-gradient(180deg, rgba(87,232,206,.05) 0%, rgba(0,0,0,.3) 100%);
+    padding:64px 0 32px;
+    margin-top:40px;
+  }
+  footer .wrap{
+    display:grid;
+    grid-template-columns:1.2fr 1fr 0.8fr;
+    gap:60px;
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 28px;
+  }
+  @media (max-width:900px){
+    footer .wrap{
+      grid-template-columns:1fr;
+      gap:40px;
+    }
+  }
+  .footer-section h3{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--signal);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin:0 0 14px;
+    font-weight:600;
+  }
+  .footer-contact{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .footer-contact__item{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .footer-contact__label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--muted-lighter);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .footer-contact__link{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--text-light);
+    transition:color .2s ease;
+  }
+  .footer-contact__link:hover{
+    color:var(--signal);
+  }
+  .footer-links{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .footer-links a{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--muted-light);
+    transition:color .2s ease;
+    display:flex;
+    align-items:start;
+    gap:6px;
+  }
+  .footer-links a:hover{
+    color:var(--signal);
+  }
+  .footer-links a::before{
+    content:"→";
+    opacity:0;
+    transition:opacity .2s ease;
+  }
+  .footer-links a:hover::before{
+    opacity:1;
+  }
+  .footer-meta{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    font-size:12px;
+    color:var(--muted-lighter);
+    line-height:1.6;
+  }
+  .footer-meta p{
+    margin:0;
+  }
+  footer .separator{
+    height:1px;
+    background:linear-gradient(90deg, var(--signal) 0%, transparent 100%);
+    margin:32px 0;
+  }
+  .footer-bottom{
+    grid-column:1 / -1;
+    padding-top:24px;
+    border-top:1px solid var(--ledger);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--muted-lighter);
+  }
+  @media (max-width:560px){
+    .footer-bottom{
+      flex-direction:column;
+      text-align:center;
+    }
+  }
+
+  /* ---------- About hero + Journey timeline (redesigned) ---------- */
+  .about-hero{
+    position:relative;
+    overflow:hidden;
+    padding:88px 0;
+  }
+
+  .about-hero__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;position:relative;}
+  @media (max-width:860px){ .about-hero__grid{grid-template-columns:1fr;} }
+
+  .about-hero__name{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:32px;color:#fff;margin:0 0 18px;}
+  .about-hero__bio{font-size:15.5px;line-height:1.75;color:var(--muted-light);margin:0 0 24px;}
+  .about-hero__work{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:18px;color:#fff;margin:0 0 10px;}
+  .about-hero__skills{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:18px;color:#fff;margin:4px 0 10px;}
+
+  .about-history__item{margin-bottom:20px;}
+  .about-history__role{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--signal);line-height:1.5;}
+  .about-history__desc{font-size:13.5px;color:var(--muted-light);line-height:1.6;margin-top:5px;}
+
+  .skillbars{display:grid;gap:22px;}
+  .skillbar__top{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:13.5px;margin-bottom:9px;}
+  .skillbar__name{color:var(--signal);}
+  .skillbar__pct{color:var(--muted-light);}
+  .skillbar__track{height:8px;border-radius:6px;background:#20193F;overflow:hidden;}
+  .skillbar__fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--ledger),var(--signal-dim));}
+
+  .about-illustration{
+    display:flex;
+    justify-content:center;
+    align-content:center;
+    align-items:center;
+    position:sticky;
+  }
+
+.about-illustration img{
+    width:100%;
+    max-width:560px;
+    border:1px solid #12d7ff;
+    border-radius:12px;
+    background:#0f1732;
+    padding:18px;
+    box-shadow:
+        0 0 20px rgba(18,215,255,.15),
+        0 20px 40px rgba(0,0,0,.45);
+    transition:.35s;
+}
+
+.about-illustration img:hover{
+    transform:translateY(-6px);
+    box-shadow:
+        0 0 30px rgba(18,215,255,.35),
+        0 30px 60px rgba(0,0,0,.55);
+}
+
+@media(max-width:900px){
+
+    .about-illustration{
+        position:static;
+        margin-top:40px;
+    }
+
+    .about-illustration img{
+        max-width:420px;
+    }
+
+}
+  .journey-section{position:relative;padding:104px 0;overflow:hidden;}
+  .journey-section::before{
+    content:"";position:absolute;inset:0;opacity:.4;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg stroke='%233A2E70' stroke-width='1' fill='none'%3E%3Cpath d='M20 0V30H60V60H100V120'/%3E%3Cpath d='M120 20H80V50H40V90H0'/%3E%3Ccircle cx='20' cy='30' r='2.5'/%3E%3Ccircle cx='60' cy='60' r='2.5'/%3E%3Ccircle cx='80' cy='50' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:120px;
+  }
+  .journey-title{
+    text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:clamp(24px,3.4vw,34px);margin:0 0 68px;position:relative;
+  }
+  .journey-title .my{color:#fff;}
+  .journey-title .word{
+    background:var(--signal);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .timeline{position:relative;max-width:1000px;margin:0 auto;}
+  .timeline::before{
+    content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;
+    background:linear-gradient(180deg,var(--signal),var(--signal-dim));transform:translateX(-50%);
+  }
+  .timeline__item{position:relative;width:50%;padding:0 44px 56px;box-sizing:border-box;}
+  .timeline__item--odd{left:0;text-align:left;}
+  .timeline__item--even{left:50%;text-align:left;}
+  .timeline__dot{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:var(--signal);
+    box-shadow:0 0 18px rgba(87,232,206,.45);
+}
+  .timeline__item--odd .timeline__dot{right:-8px;}
+  .timeline__item--even .timeline__dot{left:-8px;}
+  .timeline__card{
+    background:#121A2C;
+border:1px solid #2A3550;
+    width:100%;
+    max-width:500px;
+    padding:28px;
+    border-radius:14px;
+}
+  .timeline__date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted-lighter);margin-bottom:8px;}
+  .timeline__role{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15.5px;margin:0 0 4px;}
+  .timeline__desc{font-size:13.5px;color:var(--muted-light);line-height:1.65;margin:0;}
+  @media (max-width:760px){
+    .timeline::before{left:14px;}
+    .timeline__item{width:100%;left:0 !important;text-align:left !important;padding:0 0 40px 46px;}
+    .timeline__item--odd .timeline__dot,.timeline__item--even .timeline__dot{left:9px;right:auto;}
+    .timeline__card{max-width:100%;}
+  }
+
+  /* ---------- Project detail page ---------- */
+  .detail-hero{padding:52px 0 40px;border-bottom:1px solid var(--ledger);}
+  .back-link{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted-light);display:inline-flex;gap:7px;align-items:center;
+    margin-bottom:26px;transition:color .15s ease;
+  }
+  .back-link:hover{color:var(--signal);}
+  .detail-hero__path{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted-lighter);margin-bottom:10px;}
+  .detail-hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,4.6vw,48px);margin:0 0 14px;color:var(--text-light);}
+  .detail-hero__tag{font-size:16px;color:var(--muted-light);max-width:640px;line-height:1.6;margin:0 0 22px;}
+
+  .detail-body{padding:56px 0 20px;}
+  .detail-grid{display:grid;grid-template-columns:1fr;gap:52px;align-items:start;}
+  .detail-col h2{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin:0 0 10px;color:var(--text-light);}
+  .detail-col p{font-size:15px;line-height:1.7;color:var(--muted-light);margin:0 0 22px;}
+  .role-list{list-style:none;margin:0 0 26px;padding:0;}
+  .role-list li{
+    position:relative;padding-left:22px;margin-bottom:12px;font-size:14.5px;line-height:1.6;color:var(--muted-light);
+  }
+  .role-list li::before{content:"▹";position:absolute;left:0;top:0;color:var(--signal);}
+  .metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:8px;}
+  @media (max-width:560px){ .metrics-grid{grid-template-columns:1fr;} }
+  .metric{border:1px solid var(--ledger);border-radius:var(--radius-sm);padding:14px 14px;background:var(--ink-soft);}
+  .metric__val{font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--signal);font-weight:700;}
+  .metric__label{font-size:11.5px;color:var(--muted-lighter);margin-top:4px;line-height:1.4;}
+
+  /* Project detail links */
+  .project-links{
+    margin-top:52px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .project-links .btn{padding:15px 26px;font-size:14px;}
+  .project-links__empty{
+    margin-top:52px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--muted-lighter);
+    border:1px dashed var(--ledger);
+    border-radius:var(--radius-sm);
+    padding:16px 18px;
+  }
+
+  .detail-nav{border-top:1px solid var(--ledger);padding:30px 0 60px;display:flex;justify-content:space-between;gap:16px;}
+  .detail-nav a{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted-light);border:1px solid var(--ledger);
+    padding:10px 16px;border-radius:var(--radius-sm);transition:border-color .15s ease,color .15s ease;
+  }
+  .detail-nav a:hover{border-color:var(--signal);color:var(--signal);}
+
+  .fade-in{animation:fadeIn .5s ease both;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="editor-bar">
+  <div class="editor-bar__inner">
+    <div class="logo">Nanduri Anusha</div>
+    <nav class="tabs" id="tabs">
+      <a class="tab" data-route="#/" href="#/">HOME</a>
+      <a class="tab" data-route="#/about" href="#/about">ABOUT</a>
+      <a class="tab" data-route="#/work" href="#/work">PROJECTS</a>
+      <a class="tab" data-route="#/contact" href="#/contact">CONTACT</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  </div>
+</div>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-section">
+      <h3>Get in touch</h3>
+      <div class="footer-contact">
+        <div class="footer-contact__item">
+          <span class="footer-contact__label">Email</span>
+          <a class="footer-contact__link" href="mailto:srianushananduri2801@gmail.com">srianushananduri2801@gmail.com</a>
+        </div>
+        <div class="footer-contact__item">
+          <span class="footer-contact__label">Résumé</span>
+          <a class="footer-contact__link" href="assets/resume.pdf" target="_blank" rel="noopener">
+            View Résumé ↗
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <h3>Navigate</h3>
+      <div class="footer-links">
+        <a href="#/">Home</a>
+        <a href="#/about">About</a>
+        <a href="#/work">Projects</a>
+        <a href="#/contact">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <h3>Connect</h3>
+      <div class="footer-meta">
+        <p>Currently open to Full Stack Developer opportunities. Let's build reliable software together.</p>
+        <a class="footer-contact__link" href="https://linkedin.com/in/nanduri-anusha-792750245" target="_blank" style="display:inline-flex;gap:4px;">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>Designed & Developed by Anusha Nanduri</span>
+      <span>Hyderabad, Telangana, India</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const PROFILE = {
+  name: "Anusha Nanduri",
+  role: "Full Stack / MERN Stack Developer",
+  location: "Hyderabad, Telangana, India",
+  email: "srianushananduri2801@gmail.com",
+  linkedin: "https://linkedin.com/in/nanduri-anusha-792750245"
+};
+
+const EXPERIENCE = [
+  {
+    date: "Nov 2024 — Jun 2026",
+    role: "Full Stack Developer",
+    company: "Stikbook Inc",
+    desc: "Owned frontend architecture and contributed to backend services across the MERN stack and Java microservices for three shipped production apps — Stikbook, SkillOrbit360, and StikExam."
+  },
+  {
+    date: "Sep 2024 — Oct 2024",
+    role: "Python Developer Intern",
+    desc: "Built and optimized Python modules through structured testing cycles, cutting reported bugs by 20% via systematic root-cause debugging."
+  },
+  {
+    date: "Jun 2024 — Jul 2024",
+    role: "Web Development Intern",
+    desc: "Improved mobile usability with responsive HTML5/CSS3/Flexbox-Grid layouts, and contributed to 3 feature releases through code review and sprint collaboration."
+  },
+  {
+  date: "Jun 2021 — May 2025",
+  role: "Bachelor of Technology (B.Tech) in Information Technology",
+  company: "MLR Institute of Technology",
+  desc: "Graduated with a CGPA of 8.87. Built a strong foundation in Data Structures & Algorithms, Database Management Systems, Operating Systems, Computer Networks, and Software Engineering."
+}
+];
+
+const HERO_SKILLS = [
+  "React",
+  "Next.js",
+  "React Native",
+  "Node.js",
+  "Express.js",
+  "Java",
+  "Spring Boot",
+  "MongoDB",
+  "PostgreSQL",
+  "Redis",
+  "TypeScript",
+  "JavaScript",
+  "REST APIs",
+  "Microservices",
+  "Git",
+  "Docker",
+  "JWT",
+  "Redux",
+  "Socket.IO",
+  "Figma"
+];
+
+const SKILLS = [
+  { title: "Languages", items: ["Java","JavaScript (ES6+)","TypeScript","Python","C++","C","SQL"] },
+  { title: "Frontend", items: ["React", "Next.js","React Native","Redux Toolkit","TypeScript","HTML5 / CSS3","Responsive Design", "Tailwind CSS", "Material UI"] },
+  { title: "Backend", items: ["Node.js","Express.js","Spring Boot","JWT Authentication","RBAC","REST APIs","WebSockets (Socket.IO)","Microservices"] },
+  { title: "Databases", items: ["MongoDB","PostgreSQL","Redis","Database Design", "Aggregation","Indexing & Query Optimization"] },
+  { title: "Developer Tools", items: ["Git", "GitHub","Postman", "VS Code","Agile / Scrum","Figma","LLM API Integration","Prompt Engineering", "Code Reviews", "Testing"] },
+  { title: "Core Expertise", items: ["Authentication & Authorization", "REST API Development", "Real-time Applications", "Cross-platform Mobile Apps"] }
+];
+
+
+const PROJECTS = [
+  {
+    id: "skillorbit360",
+    name: "SkillOrbit360",
+    tag: "Full Stack Recruitment Platform",
+    accent: "#57E8CE",
+    dir: "src/projects/skillorbit360",
+    summary: "A recruitment platform that streamlines hiring with dedicated experiences for candidates, recruiters, and administrators.",
+    tech: ["Next.js","TypeScript","Node.js","Express.js","MongoDB","PostgreSQL","REST APIs","Docker","Jest"],
+    brief: "SkillOrbit360 is a full-stack recruitment platform serving three distinct user types — candidates, recruiters, and admins — each with a different view of the same hiring pipeline. The candidate-facing side needed to be fast and discoverable (SEO mattered for job listings), while the recruiter and admin sides needed strict, auditable access control.",
+    role: [
+      "Led the frontend architecture decision to use Next.js with server-side rendering for the candidate-facing platform, cutting job-listing page load time by 45% and improving SEO discoverability.",
+      "Designed a role-based access system supporting candidate, recruiter, and admin user types with zero privilege-escalation bugs, implementing JWT authentication and RBAC across every API route.",
+      "Designed optimized MongoDB schemas with compound indexes and query projections, achieving sub-100ms average API response time for job search.",
+      "Maintained 90%+ unit test coverage on core API routes (job management, application workflows, user accounts) using Jest and Supertest, enabling confident refactoring across 4 major feature iterations."
+    ],
+    metrics: [
+      { val: "45%", label: "faster job-listing page load (SSR)" },
+      { val: "<100ms", label: "avg. API response, job search" },
+      { val: "0", label: "privilege-escalation bugs across 3 roles" },
+      { val: "90%+", label: "unit test coverage, core API routes" }
+    ],
+    live: "https://www.skillorbit360.com/candidate",
+    github: ""
+  },
+  {
+    id: "stikbook",
+    name: "Stikbook",
+    tag: "Social Media Platform",
+    accent: "#F0955B",
+    dir: "src/projects/stikbook",
+    platform: "mobile",
+    summary: "A real-time social networking platform with chat, feeds, notifications, and scalable microservice architecture.",
+    tech: ["React Native","Node.js","Java","PostgreSQL","REST APIs","Microservices","Redis","Socket.IO"],
+    brief: "Stikbook is the company's flagship social platform, split into independently deployable Java microservices for auth, content, feeds, and notifications. My work centered on the React Native client — building a shared, tested component library — and on the real-time and data layers underneath it.",
+    role: [
+      "Reduced UI defect rate by 35% across the React Native app by building a TypeScript-based component library of 25+ reusable, tested components, cutting inconsistencies between Android and iOS.",
+      "Helped design the real-time communication layer, integrating WebSockets (Socket.IO) with a Redis pub/sub layer to deliver chat and live notifications with under 200ms latency across services.",
+      "Worked on PostgreSQL schema design and indexing strategy across posts, comments, likes, messaging, and user-interaction tables, reducing average data retrieval time by 38%.",
+      "Improved average screen load time by 28% by refactoring navigation architecture across 15+ screens, eliminating redundant re-renders and introducing lazy loading.",
+      "Collaborated on a security-first authentication design using JWT-based auth, token refresh flows, and input sanitization enforced across all microservice boundaries."
+    ],
+    metrics: [
+      { val: "500+", label: "concurrent sessions, no degradation" },
+      { val: "<200ms", label: "chat & notification latency" },
+      { val: "38%", label: "faster data retrieval (indexing)" },
+      { val: "35%", label: "fewer UI defects (component library)" }
+    ],
+    live: "https://play.google.com/store/apps/details?id=com.stikbookinc.stikbookv2.prod&hl=en_IN",
+    github: ""
+  },
+  {
+    id: "stikexam",
+    name: "StikExam",
+    tag: "Online Examination Platform",
+    accent: "#9DB4E8",
+    dir: "src/projects/stikexam",
+    summary: "An online examination platform for secure, role-based assessments with live exam management and result processing.",
+    tech: ["React","Next.js","Node.js","Express.js","MongoDB"],
+    brief: "StikExam handles live, timed examinations for students, instructors, and admins at once. The core constraint was correctness under load — a dropped write during a live exam is unacceptable — paired with access control tight enough that no student could see another tier's tools.",
+    role: [
+      "Contributed to the system architecture supporting 200+ concurrent exam sessions with zero data loss, modeling MongoDB schemas for exams, question banks, and results with transaction support for write-critical operations.",
+      "Reduced average page interaction latency by 32% by introducing code splitting, lazy loading, and Next.js static generation for public-facing exam listing pages.",
+      "Enforced strict access control across student, instructor, and admin tiers by building custom role-based access control and session-validation middleware, resulting in zero privilege-escalation incidents in QA.",
+      "Achieved 85%+ test coverage on exam management and result-processing APIs using Jest and Supertest, catching 12 edge-case bugs prior to production deployment."
+    ],
+    metrics: [
+      { val: "200+", label: "concurrent exam sessions" },
+      { val: "0", label: "data loss on write-critical ops" },
+      { val: "32%", label: "faster page interaction" },
+      { val: "12", label: "edge-case bugs caught pre-prod" }
+    ],
+    live: "https://exam.stikbooks.com/",
+    github: ""
+  },
+  {
+    id: "vertex",
+    name: "Vertex",
+    tag: "AI Resume–JD Match Analyzer",
+    accent: "#C9A6F0",
+    dir: "src/projects/vertex",
+    summary: "An AI-powered resume analyzer that matches resumes against job descriptions and generates ATS-style insights.",
+    tech: ["Next.js","React","Tailwind CSS","Gemini API / OpenAI API","Prompt Engineering","Node.js"],
+    brief: "Vertex extracts resume text via PDF parsing and matches it against a job description, returning an ATS-style match score, keyword gap analysis, and rewrite suggestions. It was built to extend a capability SkillOrbit360's recruitment platform didn't have yet.",
+    role: [
+      "Built an AI-powered resume-JD matching tool that extracts resume text via PDF parsing and returns an ATS-style match score, keyword gap analysis, and rewrite suggestions using LLM-based structured output.",
+      "Engineered a strict JSON-schema prompt with the Gemini/OpenAI API, enforcing consistent structured responses (score, matched/missing keywords, suggestions) without post-processing errors.",
+      "Designed a switchable AI-provider architecture (Gemini/OpenAI) via environment configuration, keeping the core matching logic provider-agnostic.",
+      "Extended the AI-matching capability missing from SkillOrbit360, a recruitment platform previously shipped at Stikbook Inc."
+    ],
+    metrics: [
+      { val: "2", label: "swappable LLM providers" },
+      { val: "0", label: "post-processing errors on schema" },
+      { val: "3", label: "structured outputs per scan" },
+      { val: "1", label: "provider-agnostic matching core" }
+    ],
+    live: "",
+    github: "https://github.com/NanduriAnusha2801/vertex-resume-match-analyzer"
+  }
+];
+
+/* =========================================================
+   TEMPLATES
+   ========================================================= */
+function homeTemplate(){
+
+  function skillsMarquee() {
+    return HERO_SKILLS.map(skill => `
+      <span class="skill-pill">${skill}</span>
+    `).join("");
+  }
+
+  const gitlogHtml = EXPERIENCE.map(e => `
+    <div class="gitlog__item">
+      <div class="gitlog__meta">${e.date}</div>
+      <h3 class="gitlog__role">${e.role}</h3>
+      ${e.company ? `<div class="gitlog__company">${e.company}</div>` : ""}
+      <p class="gitlog__desc">${e.desc}</p>
+    </div>
+  `).join("");
+
+  const skillsHtml = SKILLS.map(s => `
+    <div class="skillcard">
+      <div class="skillcard__title">${s.title}</div>
+      <div class="chiprow">${s.items.map(i=>`<span class="chip">${i}</span>`).join("")}</div>
+    </div>
+  `).join("");
+
+  const projectsHtml = PROJECTS.map(p => `
+    <a class="projectcard" href="#/project/${p.id}">
+      <div class="projectcard__path"><b>~/</b>${p.dir}</div>
+      <h3>${p.name}</h3>
+      <p>${p.summary}</p>
+      <div class="chiprow" style="margin-bottom:16px;">${p.tech.slice(0,4).map(t=>`<span class="chip">${t}</span>`).join("")}</div>
+      <div class="projectcard__foot">
+        <span class="projectcard__open">Open Case Study →</span>
+      </div>
+    </a>
+  `).join("");
+
+  return `
+  <section class="hero section--dark">
+    <div class="wrap hero__grid">
+      <div>
+        <div class="hero__badge">const status = "Building. Learning. Shipping."</div>
+        <h1>Creating scalable <em>applications</em> from frontend to backend.</h1>
+        <p class="lead">1.7+ years of experience building production web and mobile applications using React, React Native, Next.js, Node.js, Java, and Spring Boot. Contributed to three live products serving real users with scalable APIs and reusable frontend components.</p>
+        <div class="hero__actions">
+          <a class="btn btn--solid" href="#/work">View Projects</a>
+          <a
+            class="btn btn--download"
+            href="assets/resume.pdf"
+            target="_blank"
+            rel="noopener"
+          >
+            View Résumé ↗
+          </a>
+        </div>
+      </div>
+      <div class="code-panel">
+  <div class="code-panel__head">
+    <span></span><span></span><span></span>
+    <span class="code-panel__title">profile.ts</span>
+  </div>
+
+  <div class="code-panel__body">
+<pre style="margin:0;white-space:pre-wrap;"><span class="kw">const</span> anusha = {
+  role: <span class="str">"Full Stack Developer"</span>,
+  based: <span class="str">"Hyderabad, India"</span>,
+  experience: <span class="str">"1.7+ years"</span>,
+  
+  status: <span class="str">"Open to Work"</span>,
+  <span class="prop">production applications</span>: [<span class="str">"StikBook"</span>, <span class="str">"SkillOrbit360"</span>, <span class="str">"StikExam"</span>],
+
+  <span class="prop">frontend</span>: [<span class="str">"React"</span>, <span class="str">"Next.js"</span>, <span class="str">"React Native"</span>, <span class="str">"TypeScript"</span>],
+  <span class="prop">backend</span>: [<span class="str">"Node.js"</span>, <span class="str">"Express.js"</span>, <span class="str">"Java"</span>, <span class="str">"Spring Boot"</span>],
+  <span class="prop">database</span>: [<span class="str">"MongoDB"</span>, <span class="str">"PostgreSQL"</span>, <span class="str">"Redis"</span>],
+  <span class="prop">tools</span>: [<span class="str">"Git"</span>, <span class="str">"Postman"</span>, <span class="str">"Figma"</span>]
+};<span class="cur"></span></pre>
+  </div>
+</div>
+    </div>
+  </section>
+
+  <div class="skills-marquee">
+  <div class="skills-track">
+    ${skillsMarquee()}
+    ${skillsMarquee()}
+  </div>
+</div>
+
+  <section class="section--paper" id="about-preview">
+    <div class="wrap about__grid">
+      <div class="about">
+        <div class="name">NANDURI ANUSHA</div>
+        <h2 class="section-title">From Figma wireframe<br>to production deploy.</h2>
+        <p>I enjoy solving problems from both sides of the stack. Whether it's building responsive interfaces, designing APIs, or improving performance, I like understanding how every piece fits together to create reliable software.</p>
+        <p>Over the past 1.7 years, I've worked on products used by real users, where writing clean, maintainable code and collaborating with teams mattered just as much as shipping features.</p>
+        <a class="btn btn--ghost" href="#/about" style="margin-top:8px;">Full background →</a>
+      </div>
+      <div>
+        <div class="gitlog">${gitlogHtml}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--dark">
+    <div class="wrap">
+      <h2 class="section-title">Stack &amp; tools</h2>
+      <p class="skills_subtitle">A toolkit built through 1.7+ years of developing web and mobile applications.</p>
+      <div class="skills-grid">${skillsHtml}</div>
+    </div>
+  </section>
+
+  <section class="section--paper">
+    <div class="wrap">
+      <h2 class="section-title">Four <em>platforms</em>, shipped.</h2>
+      <div class="projects-grid">${projectsHtml}</div>
+    </div>
+  </section>
+
+  ${contactSectionTemplate()}
+  `;
+}
+
+function aboutTemplate(){
+  const bars = [
+    { name: "React / React Native", pct: 90 },
+    { name: "Node.js / Express.js", pct: 85 },
+    { name: "Java / Spring Boot", pct: 75 },
+    { name: "MongoDB / PostgreSQL", pct: 80 }
+  ];
+  const barsHtml = bars.map(b => `
+    <div>
+      <div class="skillbar__top"><span class="skillbar__name">${b.name}</span><span class="skillbar__pct">${b.pct}%</span></div>
+      <div class="skillbar__track"><div class="skillbar__fill" style="width:${b.pct}%"></div></div>
+    </div>
+  `).join("");
+
+  const historyHtml = EXPERIENCE.map(e => `
+    <div class="about-history__item">
+      <div class="about-history__role">${e.role}${e.company ? " · " + e.company : ""} <span style="color:var(--muted-lighter);">(${e.date})</span></div>
+      <div class="about-history__desc">${e.desc}</div>
+    </div>
+  `).join("");
+
+  const timelineHtml = EXPERIENCE.map((e, i) => {
+    const side = i % 2 === 0 ? "odd" : "even";
+    const accent = i % 2 === 0 ? "var(--signal)" : "var(--signal-alt)";
+    return `
+    <div class="timeline__item timeline__item--${side}">
+      <div class="timeline__dot" style="border:3px solid ${accent};"></div>
+      <div class="timeline__card" style="border-color:${accent};">
+        <div class="timeline__date">${e.date}</div>
+        <div class="timeline__role" style="color:${accent};">${e.role}${e.company ? " · " + e.company : ""}</div>
+        <p class="timeline__desc">${e.desc}</p>
+      </div>
+    </div>`;
+  }).join("");
+
+  const skillsHtml = SKILLS.map(s => `
+    <div class="skillcard">
+      <div class="skillcard__title">${s.title}</div>
+      <div class="chiprow">${s.items.map(i=>`<span class="chip">${i}</span>`).join("")}</div>
+    </div>
+  `).join("");
+
+  return `
+  <section class="about-hero section-dark">
+    <div class="wrap about-hero__grid">
+      <div>
+        <h1 class="about-hero__name">Anusha Nanduri</h1>
+        <p class="about-hero__bio">Full Stack / MERN Stack Developer with 1.7+ years of experience designing, building, and shipping production web and mobile applications. Strong foundation in data structures &amp; algorithms, RESTful API design, RBAC/authentication, and Agile/Scrum delivery — hands-on across the full SDLC, from architecture to deployment.</p>
+        <h1 class="about-hero__work">Work History</h1>
+        <div class="about-history">${historyHtml}</div>
+        <h1 class="about-hero__skills">My Skills</h1>
+        <div class="skillbars">${barsHtml}</div>
+      </div>
+      <div class="about-illustration">
+        <img
+            src="assets/about-girl.png"
+            alt="Girl coding illustration"
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="journey-section">
+    <div class="wrap">
+      <h2 class="journey-title"><span class="my">My</span> <span class="word">Journey</span></h2>
+      <div class="timeline">${timelineHtml}</div>
+    </div>
+  </section>
+  `;
+}
+
+function workTemplate(){
+  const projectsHtml = PROJECTS.map(p => `
+    <a class="projectcard" href="#/project/${p.id}">
+      <div class="projectcard__path"><b>~/</b>${p.dir}</div>
+      <h3>${p.name}</h3>
+      <p>${p.summary}</p>
+      <div class="chiprow" style="margin-bottom:16px;">${p.tech.map(t=>`<span class="chip">${t}</span>`).join("")}</div>
+      <div class="projectcard__foot">
+        <span class="projectcard__open">open case study →</span>
+      </div>
+    </a>
+  `).join("");
+  return `
+  <section class="section--paper" style="padding-top:56px;">
+    <div class="wrap">
+      <h1 class="section-title">Production applications</h1>
+      <p style="max-width:640px;color:var(--text-dark-soft);font-size:15.5px;line-height:1.7;margin-bottom:34px;">Four projects, each opened as its own case study — the brief, my role, the numbers, and the screens.</p>
+      <div class="projects-grid">${projectsHtml}</div>
+    </div>
+  </section>
+  `;
+}
+
+function contactSectionTemplate(){
+  return `
+  <section class="section--dark" id="contact">
+    <div class="wrap">
+      <div class="contact__grid">
+        <div>
+          <h2 class="section-title">Ready for the next challenge.</h2>
+          <p style="color:var(--muted-light);font-size:15px;line-height:1.7;max-width:440px;">I'm currently open to Full Stack Developer opportunities. If you're looking for someone to build scalable web and mobile applications, I'd love to discuss how I can contribute to your team.</p>
+          <a
+            class="btn btn--download"
+            href="assets/resume.pdf"
+            target="_blank"
+            rel="noopener"
+          >
+            View Résumé ↗
+          </a>
+        </div>
+        <div style="display:grid;gap:14px;">
+          <div class="contact-card"><div class="contact-card__label">Email</div><a href="mailto:${PROFILE.email}">${PROFILE.email}</a></div>
+          <div class="contact-card"><div class="contact-card__label">LinkedIn</div><a href="${PROFILE.linkedin}" target="_blank" rel="noopener">Connect on LinkedIn ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  `;
+}
+
+function contactTemplate(){
+  return `<div style="padding-top:40px;">` + contactSectionTemplate() + `</div>`;
+}
+
+function projectTemplate(id){
+  const idx = PROJECTS.findIndex(p=>p.id===id);
+  if(idx === -1) return notFoundTemplate();
+  const p = PROJECTS[idx];
+  const prev = PROJECTS[(idx-1+PROJECTS.length)%PROJECTS.length];
+  const next = PROJECTS[(idx+1)%PROJECTS.length];
+
+  const roleHtml = p.role.map(r=>`<li>${r}</li>`).join("");
+  const metricsHtml = p.metrics.map(m=>`
+    <div class="metric"><div class="metric__val">${m.val}</div><div class="metric__label">${m.label}</div></div>
+  `).join("");
+  const techHtml = p.tech.map(t=>`<span class="chip">${t}</span>`).join("");
+
+  const linkButtons = [];
+  if(p.live){
+    linkButtons.push(`<a class="btn btn--solid" href="${p.live}" target="_blank" rel="noopener">Visit Live Site ↗</a>`);
+  }
+  if(p.github){
+    linkButtons.push(`<a class="btn btn--download" href="${p.github}" target="_blank" rel="noopener">View on GitHub ↗</a>`);
+  }
+  const linksHtml = linkButtons.length
+    ? `<div class="project-links">${linkButtons.join("")}</div>`
+    : `<div class="project-links__empty">No public link available for this project yet.</div>`;
+
+  return `
+  <section class="detail-hero section--dark">
+    <div class="wrap">
+      <div class="detail-hero__path">~/${p.dir}</div>
+      <h1>${p.name}</h1>
+      <p class="detail-hero__tag">${p.tag} — ${p.summary}</p>
+      <div class="chiprow">${techHtml}</div>
+    </div>
+  </section>
+
+  <section class="detail-body section--dark">
+    <div class="wrap">
+      <div class="detail-grid">
+        <div class="detail-col">
+          <h2>The brief</h2>
+          <p>${p.brief}</p>
+          <h2>My role</h2>
+          <ul class="role-list">${roleHtml}</ul>
+          <h2>Impact</h2>
+          <div class="metrics-grid">${metricsHtml}</div>
+        </div>
+      </div>
+
+      ${linksHtml}
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="detail-nav">
+      <a href="#/project/${prev.id}">← ${prev.name}</a>
+      <a href="#/project/${next.id}">${next.name} →</a>
+    </div>
+  </div>
+  `;
+}
+
+function notFoundTemplate(){
+  return `
+  <section class="section--dark" style="padding-top:120px;text-align:center;">
+    <div class="wrap">
+      <div class="eyebrow" style="justify-content:center;">404</div>
+      <h1 class="section-title">Route not found.</h1>
+      <a class="btn btn--ghost" href="#/">← back home</a>
+    </div>
+  </section>`;
+}
+
+/* =========================================================
+   ROUTER
+   ========================================================= */
+const app = document.getElementById("app");
+const tabs = document.getElementById("tabs");
+const menuBtn = document.getElementById("menuBtn");
+
+menuBtn.addEventListener("click", ()=> tabs.classList.toggle("is-open"));
+
+function setActiveTab(route){
+  [...tabs.querySelectorAll(".tab")].forEach(t=>{
+    t.classList.toggle("is-active", t.dataset.route === route);
+  });
+}
+
+function render(){
+  const hash = location.hash || "#/";
+  tabs.classList.remove("is-open");
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+
+  if(hash === "#/" ){
+    app.innerHTML = homeTemplate();
+    setActiveTab("#/");
+  } else if(hash === "#/about"){
+    app.innerHTML = aboutTemplate();
+    setActiveTab("#/about");
+  } else if(hash === "#/work"){
+    app.innerHTML = workTemplate();
+    setActiveTab("#/work");
+  } else if(hash === "#/contact"){
+    app.innerHTML = contactTemplate();
+    setActiveTab("#/contact");
+  } else if(hash.startsWith("#/project/")){
+    const id = hash.replace("#/project/","");
+    app.innerHTML = projectTemplate(id);
+    setActiveTab("");
+  } else {
+    app.innerHTML = notFoundTemplate();
+    setActiveTab("");
+  }
+  app.classList.remove("fade-in");
+  void app.offsetWidth;
+  app.classList.add("fade-in");
+}
+
+window.addEventListener("hashchange", render);
+window.addEventListener("DOMContentLoaded", render);
+render();
+</script>
+</body>
+</html>
